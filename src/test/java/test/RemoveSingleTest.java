@@ -17,24 +17,18 @@ String data = "Tesla";
 
 	@Test	
 	
-	public void ValidateSingleItemRemoved() {
+	public void ValidateSingleItemIsRemoved() throws Throwable {
 
 		driver = BrowserFactory.init();
 		
 		SingleItemPage singlePage = PageFactory.initElements(driver, SingleItemPage.class);
-		 
-		singlePage.insertListItem(data);
-		singlePage.verifyEnteredListItem();
 		
-//		BrowserFactory.tearDown();
-
+		singlePage.insertListItem(data); 
+		singlePage.removeSingleItem();
+		singlePage.verifySingleItemRemoved();
 		
+		BrowserFactory.tearDown();
 
 	}
-	
-//	 Validate that a single list item could be removed using the remove button when a single checkbox is selected
-	
-	
-	
 	
 }
