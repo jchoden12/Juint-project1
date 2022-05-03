@@ -23,11 +23,15 @@ String data = "Tesla";
 		
 		SingleItemPage singlePage = PageFactory.initElements(driver, SingleItemPage.class);
 		
-		singlePage.insertListItem(data); 
+		singlePage.insertListItem(data);
+		Thread.sleep(2000);
+		singlePage.verifySingleItemIsSelected();
+		Thread.sleep(2000);
 		singlePage.removeSingleItem();
+		Thread.sleep(2000);
 		singlePage.verifySingleItemRemoved();
 		
-		BrowserFactory.tearDown();
+//		BrowserFactory.tearDown();
 
 	}
 	

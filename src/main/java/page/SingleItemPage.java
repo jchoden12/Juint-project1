@@ -1,5 +1,6 @@
 package page;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Assert;
@@ -9,11 +10,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-
-
 public class SingleItemPage extends BasePage {
 
 	WebDriver driver;
+
+	String enteredName;
+	String todocheckboxes;
 
 	public SingleItemPage(WebDriver driver) {
 		this.driver = driver;
@@ -31,17 +33,12 @@ public class SingleItemPage extends BasePage {
 	@FindBy(how = How.CSS, using = "input[type='checkbox']")
 	WebElement ALL_CHECKBOXES_Element;
 	@FindBy(how = How.CSS, using = "li[style='font-size: 16px']")
-	List<WebElement> ALL_TODO_CHECKBOXES_Element;
+	List<WebElement> ALL_TODO_LIST_Element;
+	@FindBy(how = How.CSS, using = "#todos-content > form > ul > li:nth-last-child(1) > input[type=checkbox")
+	WebElement ENTERED_NAME_CHECKBOX_ELEMENT;
 
 //  #todos-content > form > ul > li:nth-child(i)
 //	#todos-content > form > ul > li:nth-child(3) > input[type=checkbox]
-
-	String beforePath = "#todos-content > form > ul > li:nth-child(";
-	String afterPath = ")";
-	String checkboxBeforePath = "#todos-content > form > ul > li:nth-child(";
-	String checkboxAfterPath = ") > input[type=checkbox]";
-
-	String enteredName;
 
 	public void insertListItem(String data) {
 
@@ -49,44 +46,49 @@ public class SingleItemPage extends BasePage {
 		enteredName = data + generatedNumber;
 		ADD_NEW_ITEM_ELEMENT.sendKeys(enteredName);
 		ADDBUTTON_ELEMENT.click();
-		List<WebElement> alltodoCheckBoxes = ALL_TODO_CHECKBOXES_Element;
-		System.out.println("total number of ToDo List before removal  " + alltodoCheckBoxes.size());
-
+		List<WebElement> alltodoCheckBoxes = ALL_TODO_LIST_Element;
 
 	}
 
-	public void removeSingleItem() throws Throwable {
+	public void verifySingleItemIsSelected() {
 
-		for (int i = 1; i < 10; i++) {
-			String result = driver.findElement(By.cssSelector(beforePath + i + afterPath)).getText();
-			System.out.println(result);
+		ENTERED_NAME_CHECKBOX_ELEMENT.click();
+		Boolean response = ENTERED_NAME_CHECKBOX_ELEMENT.isSelected();
+		if (response == true) {
+			System.out.println("Single Item is selected");
 
-			if (result.contains(enteredName)) {
-				driver.findElement(By.cssSelector(checkboxBeforePath + i + checkboxAfterPath)).click();
-				Thread.sleep(2000);
-				REMOVE_BUTTON_ELEMENT.click();
-				
-
-			}
-
+		} else {
+			System.out.println("item is not selected");
 		}
+	}
+
+	public void removeSingleItem() {
+
+		REMOVE_BUTTON_ELEMENT.click();
 
 	}
 
 	public void verifySingleItemRemoved() {
 
-//		for (int j = 1; j < 10; j++) {
-//			String result1 = driver.findElement(By.cssSelector(beforePath + j + afterPath)).getText();
-//			System.out.println(result1);
-//		boolean response = result1.contains(enteredName);
-//		if(response == false) {
-//			System.out.println("item is removed");
-//			
-//			Assert.assertEquals("item is removed", false, response);
-//		}
+		List<WebElement> alltodoCheckBoxes = ALL_TODO_LIST_Element;
 
-			List<WebElement> alltodoCheckBoxes = ALL_TODO_CHECKBOXES_Element;
-			System.out.println("total number of ToDo List after removal  " + alltodoCheckBoxes.size());
-			
+		Iterator itr = alltodoCheckBoxes.listIterator();
+
+		while (itr.hasNext()) {
+			WebElement list = (WebElement) itr.next();
+			todocheckboxes = list.getText();
+			System.out.println(todocheckboxes);
+
+		}
+
+		if (todocheckboxes.contains(enteredName)) {
+			System.out.println("item Entered is not Removed ");
+		} else {
+			System.out.println("Single item selected is removed");
+		
+
+		}
+
 	}
+
 }

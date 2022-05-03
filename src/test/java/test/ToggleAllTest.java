@@ -24,21 +24,10 @@ public class ToggleAllTest {
 		listPage = PageFactory.initElements(driver, ListPage.class);
 
 		listPage.ValidateALLCheckBoxesAreChecked();
-//		listPage.addNewItem(data);
-//		listPage.clickAddButton();
+
 		
 	}
-	
-//	 Validate that a single list item could be removed using the remove button when a single checkbox is selected
-	
-//	@Test
-//	public void ValidateSingleItemRemoved() {
-	
-	
-//		
-//		listPage.clickSingleItemCheckbox();
-//	
-//
-//	}
+
+
 
 }
